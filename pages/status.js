@@ -1,21 +1,19 @@
-// pages/api/status.js
-export default function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  if (req.method === 'OPTIONS') return res.status(200).end();
-
-  const hasRoblox = !!(process.env.ROBLOX_API_KEY && process.env.UNIVERSE_ID);
-
-  res.status(200).json({
-    status: 'operational',
-    timestamp: new Date().toISOString(),
-    environment: {
-      NODE_ENV: process.env.NODE_ENV || 'N/A',
-      ROBLOX_API_KEY: process.env.ROBLOX_API_KEY ? '✅ Set' : '❌ Missing',
-      UNIVERSE_ID: process.env.UNIVERSE_ID ? '✅ Set' : '❌ Missing',
-      MESSAGING_TOPIC: process.env.MESSAGING_TOPIC || 'Donations'
-    },
-    webhookActive: hasRoblox,
-    configured: hasRoblox
-  });
+// pages/status.js
+export default function StatusPage() {
+  return (
+    <html lang="id">
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>System Status</title>
+        <style>{/* ... (copy style dari HTML status sebelumnya) ... */}</style>
+      </head>
+      <body>
+        {/* ... (copy body dari HTML status sebelumnya) ... */}
+        <script dangerouslySetInnerHTML={{ __html: `
+          // ... (copy script dari HTML status sebelumnya) ...
+        `}} />
+      </body>
+    </html>
+  );
 }
