@@ -1,4 +1,4 @@
-// pages/api/status.js
+// api/status.js
 export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -10,7 +10,7 @@ export default function handler(req, res) {
     status: 'operational',
     timestamp: new Date().toISOString(),
     environment: {
-      NODE_ENV: process.env.NODE_ENV || 'N/A',
+      NODE_ENV: process.env.NODE_ENV || 'production',
       ROBLOX_API_KEY: process.env.ROBLOX_API_KEY ? '✅ Set' : '❌ Missing',
       UNIVERSE_ID: process.env.UNIVERSE_ID ? '✅ Set' : '❌ Missing',
       MESSAGING_TOPIC: process.env.MESSAGING_TOPIC || 'Donations'
