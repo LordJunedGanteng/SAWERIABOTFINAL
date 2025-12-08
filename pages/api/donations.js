@@ -65,16 +65,27 @@ export default async function handler(req, res) {
       if (ROBLOX_API_KEY && UNIVERSE_ID) {
         try {
           console.log('📤 Mengirim ke Roblox...');
+          console.log('Universe ID:', UNIVERSE_ID);
+          console.log('Topic:', MESSAGING_TOPIC);
           
-          // Format data untuk Roblox (harus string, bukan object!)
-          const robloxData = JSON.stringify({
+          // Format data - HARUS STRING!
+          const messageString = JSON.stringify({
             donor: donation.donor,
             amount: donation.amount,
             message: donation.message,
             created_at: donation.created_at,
             id: donation.id
           });
-
+          
+          console.log('Message to send:', messageString);
+          
+          // Request body - message HARUS string
+          const requestBody = {
+            message: messageString
+          };
+          
+          console.log('Request body:', JSON.stringify(requestBody));
+          
           const robloxResponse = await fetch(
             `https://apis.roblox.com/messaging-service/v1/universes/${UNIVERSE_ID}/topics/${MESSAGING_TOPIC}`,
             {
@@ -83,27 +94,28 @@ export default async function handler(req, res) {
                 'x-api-key': ROBLOX_API_KEY,
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify({
-                message: robloxData  // Ini harus STRING, bukan object!
-              })
+              body: JSON.stringify(requestBody)
             }
           );
 
+          const responseText = await robloxResponse.text();
+          console.log('Roblox response status:', robloxResponse.status);
+          console.log('Roblox response body:', responseText);
+
           if (!robloxResponse.ok) {
-            const errorText = await robloxResponse.text();
             console.error('❌ Roblox API Error:', robloxResponse.status);
-            console.error('Details:', errorText);
-            
-            // Masih return success ke Saweria agar webhook tidak retry
-            // Tapi log error untuk debugging
+            console.error('Response:', responseText);
           } else {
             console.log('✅ Berhasil dikirim ke Roblox!');
           }
         } catch (robloxError) {
-          console.error('❌ Roblox send error:', robloxError.message);
+          console.error('❌ Roblox send error:', robloxError);
+          console.error('Error stack:', robloxError.stack);
         }
       } else {
         console.warn('⚠️ Roblox credentials belum di-set');
+        console.warn('ROBLOX_API_KEY:', ROBLOX_API_KEY ? 'Set' : 'Missing');
+        console.warn('UNIVERSE_ID:', UNIVERSE_ID ? 'Set' : 'Missing');
       }
 
       // ─────────────────────────────────────────────────────────
