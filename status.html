@@ -80,8 +80,8 @@
         
         .status-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(147, 51, 234, 0.3);
-            box-shadow: 0 20px 40px rgba(147, 51, 234, 0.2);
+            border-color: #4bbdff33;;
+            box-shadow: 0 20px 40px #00a2ff33;
         }
         
         .status-header {
@@ -448,7 +448,7 @@
                             </div>
                             <div class="status-row">
                                 <span class="status-label">Status</span>
-                                <span class="status-value">${data.webhookActive ? 'Ready to receive donations' : 'Waiting for first donation'}</span>
+                                <span class="status-value">${data.webhookActive ? 'Stable' : 'Waiting for first donation'}</span>
                             </div>
                             <div class="status-row">
                                 <span class="status-label">Setup</span>
@@ -505,7 +505,7 @@
                         <h3 style="color: #10b981;">✅ System Fully Configured</h3>
                         <p style="color: #aaa;">Webhook is live. Donations will appear in real-time!</p>
                         <p style="color: #888; font-size: 0.9em; margin-top: 10px;">
-                            📌 Webhook URL: <code>https://saweriajuned2.vercel.app/api/donations</code>
+                            📌 Webhook URL: <code>https://saweriaf4r.vercel.app/api/donations</code>
                         </p>
                     </div>
                 `}
@@ -518,4 +518,5 @@
         setInterval(loadStatus, 30000);
     </script>
 </body>
+
 </html>
