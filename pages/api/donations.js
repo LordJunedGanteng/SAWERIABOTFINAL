@@ -66,6 +66,15 @@ export default async function handler(req, res) {
         try {
           console.log('📤 Mengirim ke Roblox...');
           
+          // Format data untuk Roblox (harus string, bukan object!)
+          const robloxData = JSON.stringify({
+            donor: donation.donor,
+            amount: donation.amount,
+            message: donation.message,
+            created_at: donation.created_at,
+            id: donation.id
+          });
+
           const robloxResponse = await fetch(
             `https://apis.roblox.com/messaging-service/v1/universes/${UNIVERSE_ID}/topics/${MESSAGING_TOPIC}`,
             {
@@ -75,13 +84,7 @@ export default async function handler(req, res) {
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify({
-                message: JSON.stringify({
-                  donor: donation.donor,
-                  amount: donation.amount,
-                  message: donation.message,
-                  timestamp: donation.created_at,
-                  id: donation.id
-                })
+                message: robloxData  // Ini harus STRING, bukan object!
               })
             }
           );
