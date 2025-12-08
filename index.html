@@ -27,13 +27,14 @@
             width: 100%;
             height: 100%;
             z-index: 0;
+            pointer-events: none;
         }
 
         .particle {
             position: absolute;
             background: rgba(147, 51, 234, 0.3);
             border-radius: 50%;
-            animation: float 20s infinite;
+            animation: float 20s infinite ease-in-out;
         }
 
         @keyframes float {
@@ -84,6 +85,12 @@
             justify-content: center;
             font-size: 1.5em;
             box-shadow: 0 10px 30px rgba(147, 51, 234, 0.4);
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
         
         h1 {
@@ -95,12 +102,30 @@
             background-clip: text;
             margin-bottom: 20px;
             letter-spacing: -3px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .subtitle {
             color: #888;
             font-size: 1.2em;
             font-weight: 300;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
         .stats-container {
@@ -120,6 +145,21 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            animation: scaleIn 0.5s ease-out both;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .stat-card::before {
@@ -171,6 +211,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            animation: fadeIn 0.6s ease-out 0.4s both;
         }
 
         .section-title::after {
@@ -192,8 +233,7 @@
             border-radius: 20px;
             padding: 30px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: slideUp 0.6s ease forwards;
-            opacity: 0;
+            animation: slideUp 0.6s ease-out both;
             position: relative;
             overflow: hidden;
         }
@@ -254,6 +294,18 @@
             justify-content: center;
             font-size: 1.3em;
             font-weight: 600;
+            animation: rotateIn 0.5s ease-out;
+        }
+
+        @keyframes rotateIn {
+            from {
+                transform: rotate(-180deg) scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: rotate(0) scale(1);
+                opacity: 1;
+            }
         }
 
         .donor-name {
@@ -269,6 +321,18 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: slideInRight 0.5s ease-out 0.2s both;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
         
         .message {
@@ -280,6 +344,7 @@
             background: rgba(0, 0, 0, 0.3);
             border-radius: 12px;
             border-left: 3px solid #9333ea;
+            animation: fadeIn 0.6s ease-out 0.3s both;
         }
         
         .donation-footer {
@@ -326,17 +391,31 @@
             border-radius: 20px;
             text-align: center;
             backdrop-filter: blur(10px);
+            animation: shake 0.5s ease-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
         
         .empty-state {
             text-align: center;
             padding: 100px 20px;
+            animation: fadeIn 0.8s ease-out;
         }
         
         .empty-state-icon {
             font-size: 5em;
             margin-bottom: 20px;
             opacity: 0.3;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
         .empty-state p {
@@ -361,24 +440,7 @@
             align-items: center;
             gap: 8px;
             z-index: 100;
-        }
-
-        .countdown-badge {
-            position: fixed;
-            top: 70px;
-            right: 20px;
-            background: rgba(147, 51, 234, 0.2);
-            border: 1px solid rgba(147, 51, 234, 0.3);
-            color: #9333ea;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-size: 0.85em;
-            font-weight: 600;
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 100;
+            animation: slideInRight 0.6s ease-out;
         }
 
         .status-dot {
@@ -427,11 +489,6 @@
         LIVE
     </div>
 
-    <div class="countdown-badge" id="countdownBadge">
-        <span>⏱️</span>
-        <span id="countdownText">Starting in 15s...</span>
-    </div>
-
     <div class="container">
         <div class="header">
             <div class="logo">
@@ -467,7 +524,7 @@
     </div>
     
     <script>
-        // Create particles
+        // Create animated particles
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
             const particleCount = 30;
@@ -489,27 +546,7 @@
         
         createParticles();
 
-        const FETCH_INTERVAL = 30000; // 30 detik auto-refresh
-        const INITIAL_DELAY = 15000; // 15 detik delay sebelum start
-        
-        let countdownSeconds = 15;
-        let isInitialLoad = true;
-        
-        // Update countdown display
-        function updateCountdown() {
-            const countdownBadge = document.getElementById('countdownBadge');
-            const countdownText = document.getElementById('countdownText');
-            
-            if (countdownSeconds > 0) {
-                countdownText.textContent = `Loading in ${countdownSeconds}s...`;
-                countdownSeconds--;
-            } else {
-                countdownBadge.style.display = 'none';
-            }
-        }
-        
-        // Countdown timer
-        const countdownInterval = setInterval(updateCountdown, 1000);
+        const FETCH_INTERVAL = 10000; // 10 detik
         
         function formatRupiah(amount) {
             return new Intl.NumberFormat('id-ID', {
@@ -546,13 +583,6 @@
                 
                 if (data.success && data.donations) {
                     displayDonations(data.donations);
-                    
-                    // Hide countdown after first successful load
-                    if (isInitialLoad) {
-                        isInitialLoad = false;
-                        clearInterval(countdownInterval);
-                        document.getElementById('countdownBadge').style.display = 'none';
-                    }
                 } else {
                     throw new Error('Invalid response format');
                 }
@@ -612,7 +642,7 @@
                 <div class="error-message">
                     <h3 style="margin-bottom: 15px;">⚠️ Error</h3>
                     <p>${message}</p>
-                    <p style="margin-top: 15px; font-size: 0.9em; opacity: 0.7;">Pastikan SAWERIA_JWT_TOKEN sudah diset di Vercel</p>
+                    <p style="margin-top: 15px; font-size: 0.9em; opacity: 0.7;">Coba refresh halaman</p>
                 </div>
             `;
         }
@@ -623,12 +653,11 @@
             return div.innerHTML;
         }
         
-        // Initial fetch dengan delay 15 detik
-        setTimeout(() => {
-            fetchDonations();
-            // Auto refresh setiap 30 detik setelah initial load
-            setInterval(fetchDonations, FETCH_INTERVAL);
-        }, INITIAL_DELAY);
+        // Initial fetch
+        fetchDonations();
+        
+        // Auto refresh
+        setInterval(fetchDonations, FETCH_INTERVAL);
     </script>
 </body>
 </html>
